@@ -8,7 +8,7 @@ def world_base_state():
         User(
             **UserWrite(
                 email="test@email.com",
-                name="some person",
+                username="some person",
                 hashed_password="a really strong password",
             ).dict()
         )

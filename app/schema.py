@@ -23,7 +23,7 @@ class User(Base, WithAutoIntPK, WithAuditTimes):
     __tablename__ = "users"
 
     email = Column(String, unique=True, nullable=False)
-    name = Column(String)
+    username = Column(String)
     hashed_password = Column(String)
 
     saves = relationship("Save", back_populates="user")

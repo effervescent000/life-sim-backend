@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel, orm_mode=True):
     email: str
-    name: Optional[str]
+    username: Optional[str]
 
 
 class UserRead(UserBase):
