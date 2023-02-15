@@ -19,6 +19,8 @@ def user_factory(
 
 def world_base_state():
     out = []
-    user = User(**UserWrite(**user_factory(username="some person")).dict())
+    user = User(
+        **UserWrite(**user_factory(username="some person", hash_password=True)).dict()
+    )
     out.append(user)
     return out

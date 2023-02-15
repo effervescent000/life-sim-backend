@@ -34,13 +34,9 @@ async def add_user(
 
 @router.post("/login")
 async def login(login_attempt: UserWrite, db: Session = Depends(get_db)):
-    user = db.scalars(
-        select(User).where(User.email == login_attempt.email)
-    ).one_or_none()
+    user = db.scalars(select(User).where(User.email == login_attempt.email)).first()
     if not user:
         raise bad_request(message="Incorrect username or password")
-    # TODO hash this, we're just pretending for now
-    hashed_password = login_attempt.password
-    if hashed_password != user.password:
+    if passlib.verify(login_attempt.password, str(user.password)) is False:
         raise bad_request(message="Incorrect username or password")
     return {"access_token": user.username, "token_type": "bearer"}

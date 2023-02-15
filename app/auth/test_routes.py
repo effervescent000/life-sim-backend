@@ -40,6 +40,7 @@ def test_login_invalid_email(client: TestClient):
 
 def test_login_invalid_password(client: TestClient):
     response = client.post(
-        "/auth/login/", json=world.user_factory(password="wrong password")
+        "/auth/login/",
+        json=world.user_factory(password="wrong password"),
     )
     assert response.json() == {"detail": "Incorrect username or password"}
