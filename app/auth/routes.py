@@ -37,7 +37,8 @@ async def login(login_attempt: UserWrite, db: Session = Depends(get_db)):
     ).one_or_none()
     if not user:
         raise bad_request(message="Incorrect username or password")
-    hashed_password = lambda: login_attempt.password
+    # TODO hash this, we're just pretending for now
+    hashed_password = login_attempt.password
     if hashed_password != user.password:
         raise bad_request(message="Incorrect username or password")
     return {"access_token": user.username, "token_type": "bearer"}

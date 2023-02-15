@@ -27,6 +27,5 @@ def test_post_user(client: TestClient):
 
 
 def test_login(client: TestClient):
-    user = world.user_factory()
-    response = client.post("/auth/login/", json=user)
-    assert response.json() == {"access_token": user["username"], "token_type": "bearer"}
+    response = client.post("/auth/login/", json=world.user_factory())
+    assert response.json() == {"access_token": "some person", "token_type": "bearer"}

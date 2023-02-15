@@ -1,7 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
+from fastapi import HTTPException
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 from .main import app
 from .deps import get_db
@@ -28,7 +29,7 @@ def session():
 
 
 @pytest.fixture
-def client(session):
+def client(session: Session):
     def override_get_db():
         try:
             session.add_all(world.world_base_state())
