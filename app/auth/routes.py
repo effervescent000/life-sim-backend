@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from passlib.hash import pbkdf2_sha256 as hash
+from passlib.hash import pbkdf2_sha256 as passlib
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/auth", tags=[Tags.users])
 
 @router.get("/")
 async def get_users(db: Session = Depends(get_db)) -> list[UserRead]:
-    return [UserRead.from_orm(user) for user in db.scalars(select(User))]
+    return [UserRead.from_orm(user) for user in db.scalars(select(User)).all()]
 
 
 @router.post("/")
@@ -24,7 +24,9 @@ async def add_user(
     user: UserWrite,
     db: Session = Depends(get_db),
 ) -> UserRead:
-    out = User(**user.dict())
+    out = User(
+        **{**user.dict(exclude={"password"}), "password": passlib.hash(user.password)}
+    )
     db.add(out)
     db.commit()
     return UserRead.from_orm(out)
