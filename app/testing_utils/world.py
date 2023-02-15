@@ -9,7 +9,7 @@ def world_base_state():
             **UserWrite(
                 email="test@email.com",
                 username="some person",
-                hashed_password="a really strong password",
+                password="a really strong password",
             ).dict()
         )
     )

@@ -13,4 +13,4 @@ class UserRead(UserBase):
 
 
 class UserWrite(UserBase):
-    hashed_password: str
+    password: str

@@ -24,7 +24,7 @@ class User(Base, WithAutoIntPK, WithAuditTimes):
 
     email = Column(String, unique=True, nullable=False)
     username = Column(String)
-    hashed_password = Column(String)
+    password = Column(String)
 
     saves = relationship("Save", back_populates="user")
 
