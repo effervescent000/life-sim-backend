@@ -1,6 +1,6 @@
 import time
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship, declarative_mixin
 
 from .database import Base
@@ -24,7 +24,7 @@ class User(Base, WithAutoIntPK, WithAuditTimes):
 
     email = Column(String, unique=True, nullable=False)
     username = Column(String)
-    hashed_password = Column(String)
+    password = Column(String)
 
     saves = relationship("Save", back_populates="user")
 
