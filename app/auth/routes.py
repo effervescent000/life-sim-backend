@@ -33,7 +33,7 @@ async def add_user(
 @router.post("/login")
 async def login(login_attempt: UserWrite, db: Session = Depends(get_db)):
     user = db.scalars(
-        select(User).where(User.email == login_attempt.username)
+        select(User).where(User.email == login_attempt.email)
     ).one_or_none()
     if not user:
         raise bad_request(message="Incorrect username or password")
