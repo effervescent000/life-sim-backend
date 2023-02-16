@@ -7,7 +7,7 @@ from sqlalchemy import select
 from .models import UserRead, UserWrite
 from ..deps import get_db
 from ..tags import Tags
-from ..schema import User
+from ..db.schema import User
 from ..utils.http_utils import bad_request
 
 router = APIRouter(prefix="/auth", tags=[Tags.users])

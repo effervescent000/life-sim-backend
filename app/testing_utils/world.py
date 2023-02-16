@@ -1,7 +1,7 @@
 from typing import Any
 from passlib.hash import pbkdf2_sha256 as passlib
 
-from ..schema import User
+from ..db.schema import User
 from ..auth.models import UserWrite
 
 
