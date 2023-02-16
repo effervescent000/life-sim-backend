@@ -1,11 +1,16 @@
 from typing import Optional
-
 from pydantic import BaseModel
 
+from ..db.models import MirrorModel
+from ..db.schema import User as UserORM
 
-class UserBase(BaseModel, orm_mode=True):
+
+class UserBase(MirrorModel[UserORM], orm=UserORM):
     email: str
-    username: Optional[str]
+    username: Optional[str] = None
+
+    def __init_subclass__(cls, **kwargs) -> None:
+        super().__init_subclass__(**kwargs, orm=cls.orm)
 
 
 class UserRead(UserBase):

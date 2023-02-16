@@ -27,8 +27,11 @@ def test_post_user(client: TestClient):
 
 
 def test_login_valid(client: TestClient):
-    response = client.post("/auth/login/", json=world.user_factory())
-    assert response.json() == {"access_token": "some person", "token_type": "bearer"}
+    user = world.user_factory()
+    response = client.post("/auth/login/", json=user)
+    assert response.json() == {
+        "user": {"id": 1, "email": "test@email.com", "username": "some person"}
+    }
 
 
 def test_login_invalid_email(client: TestClient):
