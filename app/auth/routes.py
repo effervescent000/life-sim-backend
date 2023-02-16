@@ -44,4 +44,4 @@ async def login(login_attempt: LoginForm, db: Session = Depends(get_db)):
         raise bad_request(message="Incorrect username or password")
     # if passlib.verify(data.password, str(user.password)) is False:
     #     raise bad_request(message="Incorrect username or password")
-    return {"access_token": user.id, "token_type": "bearer"}
+    return {"user": UserRead.from_orm(user)}
