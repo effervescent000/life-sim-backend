@@ -27,7 +27,7 @@ def test_post_user(client: TestClient):
 
 
 def test_login_valid(client: TestClient):
-    user = world.user_factory()
+    user = world.user_factory(id=1)
     response = client.post("/auth/login/", json=user)
     assert response.json() == {
         "user": {"id": 1, "email": "test@email.com", "username": "some person"}
@@ -36,7 +36,7 @@ def test_login_valid(client: TestClient):
 
 def test_login_invalid_email(client: TestClient):
     response = client.post(
-        "/auth/login/", json=world.user_factory(email="wrong@email.com")
+        "/auth/login/", json=world.user_factory(email="wrong@email.com", id=1)
     )
     assert response.json() == {"detail": "Incorrect username or password"}
 
@@ -44,6 +44,6 @@ def test_login_invalid_email(client: TestClient):
 def test_login_invalid_password(client: TestClient):
     response = client.post(
         "/auth/login/",
-        json=world.user_factory(password="wrong password"),
+        json=world.user_factory(password="wrong password", id=1),
     )
     assert response.json() == {"detail": "Incorrect username or password"}
