@@ -14,3 +14,8 @@ class UserRead(UserBase):
 
 class UserWrite(UserBase):
     password: str
+
+
+class LoginForm(BaseModel):
+    email: str
+    password: str
