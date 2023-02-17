@@ -9,5 +9,5 @@ def test_get_saves_without_auth(client: TestClient) -> None:
 
 
 def test_get_user_saves(client: TestClient) -> None:
-    response = client.get("/saves")
+    response = client.get("/saves", headers=world.AUTH_HEADERS_USER_PRIMARY)
     assert response.json() == [world.save_factory(id=1, user_id=1)]

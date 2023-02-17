@@ -37,12 +37,10 @@ async def add_user(
 
 @router.post("/login")
 async def login(login_attempt: LoginForm, db: Session = Depends(get_db)):
-    user = db.scalars(select(User).where(User.email == login_attempt.email)).first()
-    # user = db.scalars(select(User).where(User.email == data.username)).first()
-    if not user:
+    result = db.scalars(select(User).where(User.email == login_attempt.email)).first()
+    if not result:
         raise bad_request(message="Incorrect username or password")
-    if passlib.verify(login_attempt.password, str(user.password)) is False:
+    if passlib.verify(login_attempt.password, str(result.password)) is False:
         raise bad_request(message="Incorrect username or password")
-    # if passlib.verify(data.password, str(user.password)) is False:
-    #     raise bad_request(message="Incorrect username or password")
-    return make_access_token(user=UserRead.from_orm(user), jwt=sign_jwt(user.id))
+    user = UserRead.from_orm(result)
+    return make_access_token(user=user, jwt=sign_jwt(user))

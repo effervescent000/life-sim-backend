@@ -1,8 +1,9 @@
-import json
 from fastapi import Request, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 
 from .db.database import SessionLocal
 from .auth.models import UserRead
+from .auth.helpers import decode_jwt
 
 
 def get_db():
@@ -14,9 +15,15 @@ def get_db():
 
 
 def auth_required(request: Request):
-    cookie = request.cookies
+    if not request.headers:
+        raise HTTPException(status_code=401, detail="Not authorized")
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        raise HTTPException(status_code=401, detail="Not authorized")
+    scheme, token = auth_header.split(" ")
+    if scheme.lower() != "bearer":
+        raise HTTPException(status_code=400, detail="Invalid header")
     try:
-        user = json.loads(cookie.get("user"))
-        yield user
+        return decode_jwt(token)
     except:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+        raise HTTPException(status_code=400, detail="Invalid token")

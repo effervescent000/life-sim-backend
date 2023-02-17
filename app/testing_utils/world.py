@@ -1,7 +1,9 @@
 from typing import Any
 from passlib.hash import pbkdf2_sha256 as passlib
 
-from ..db.schema import User
+from ..db.schema import User, Save
+from ..auth.helpers import sign_jwt
+from ..auth.models import UserRead
 
 
 def user_factory(
@@ -26,8 +28,15 @@ def save_factory(*, title=None, active=None, user_id, id):
     }
 
 
+USER_PRIMARY = user_factory(username="some person", hash_password=True, id=1)
+SAVE_PRIMARY = save_factory(id=1, user_id=USER_PRIMARY["id"])
+
+
 def world_base_state():
-    out = []
-    user = User(**user_factory(username="some person", hash_password=True, id=1))
-    out.append(user)
+    out = [User(**USER_PRIMARY), Save(**SAVE_PRIMARY)]
     return out
+
+
+AUTH_HEADERS_USER_PRIMARY = {
+    "Authorization": f"Bearer {sign_jwt(UserRead(**USER_PRIMARY))}"
+}
