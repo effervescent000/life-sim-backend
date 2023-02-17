@@ -15,4 +15,5 @@ router = APIRouter(prefix="/saves", tags=[Tags.saves])
 
 @router.get("/")
 async def get_saves(db: Session = Depends(get_db), user=Depends(auth_required)):
-    return "something here"
+    result = select_mirror_models(db, user["id"], SaveRead)
+    return result

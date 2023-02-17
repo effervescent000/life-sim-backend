@@ -29,11 +29,13 @@ def save_factory(*, title=None, active=None, user_id, id):
 
 
 USER_PRIMARY = user_factory(username="some person", hash_password=True, id=1)
+USER_SECONDARY = user_factory(username="a different user", hash_password=True, id=10)
 SAVE_PRIMARY = save_factory(id=1, user_id=USER_PRIMARY["id"])
+SAVE_SECONDARY = save_factory(id=10, user_id=USER_SECONDARY["id"])
 
 
 def world_base_state():
-    out = [User(**USER_PRIMARY), Save(**SAVE_PRIMARY)]
+    out = [User(**USER_PRIMARY), Save(**SAVE_PRIMARY), Save(**SAVE_SECONDARY)]
     return out
 
 
