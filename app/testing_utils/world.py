@@ -17,6 +17,15 @@ def user_factory(
     }
 
 
+def save_factory(*, title=None, active=None, user_id, id):
+    return {
+        "id": id,
+        "title": title or "Untitled",
+        "active": active or False,
+        "user_id": user_id,
+    }
+
+
 def world_base_state():
     out = []
     user = User(**user_factory(username="some person", hash_password=True, id=1))
