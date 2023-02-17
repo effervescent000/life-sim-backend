@@ -29,8 +29,11 @@ def test_post_user(client: TestClient):
 def test_login_valid(client: TestClient):
     user = world.user_factory(id=1)
     response = client.post("/auth/login/", json=user)
-    assert response.json() == {
-        "user": {"id": 1, "email": "test@email.com", "username": "some person"}
+    data = response.json()
+    data.pop("access_token")
+    assert data == {
+        "user": {"id": 1, "email": "test@email.com", "username": "some person"},
+        "token_type": "bearer",
     }
 
 

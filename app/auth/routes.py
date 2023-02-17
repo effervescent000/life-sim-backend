@@ -6,6 +6,7 @@ from passlib.hash import pbkdf2_sha256 as passlib
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
+from .helpers import sign_jwt, make_access_token
 from .models import UserRead, UserWrite, LoginForm
 from ..deps import get_db
 from ..tags import Tags
@@ -44,4 +45,4 @@ async def login(login_attempt: LoginForm, db: Session = Depends(get_db)):
         raise bad_request(message="Incorrect username or password")
     # if passlib.verify(data.password, str(user.password)) is False:
     #     raise bad_request(message="Incorrect username or password")
-    return {"user": UserRead.from_orm(user)}
+    return make_access_token(user=UserRead.from_orm(user), jwt=sign_jwt(user.id))
