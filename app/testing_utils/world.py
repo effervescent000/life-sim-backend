@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 from passlib.hash import pbkdf2_sha256 as passlib
 
 from ..db.schema import User, Save
@@ -7,7 +7,12 @@ from ..auth.models import UserRead
 
 
 def user_factory(
-    *, username=None, email=None, password=None, hash_password=False, id
+    *,
+    username: Optional[str] = None,
+    email: Optional[str] = None,
+    password: Optional[str] = None,
+    hash_password: bool = False,
+    id: int,
 ) -> dict[str, Any]:
     return {
         "id": id,
@@ -19,7 +24,9 @@ def user_factory(
     }
 
 
-def save_factory(*, title=None, active=None, user_id, id):
+def save_factory(
+    *, title: Optional[str] = None, active: bool = False, user_id: int, id: int
+) -> dict[str, Any]:
     return {
         "id": id,
         "title": title or "Untitled",
