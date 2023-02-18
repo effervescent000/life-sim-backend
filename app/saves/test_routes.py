@@ -15,7 +15,7 @@ def test_get_user_saves(client: TestClient) -> None:
     assert response.json() == [{"active": False, "id": 1, "title": "Untitled"}]
 
 
-def test_post_save(client: TestClient):
+def test_post_save(client: TestClient) -> None:
     save_body = [
         {
             k: v
@@ -27,3 +27,21 @@ def test_post_save(client: TestClient):
         "/saves", headers=world.AUTH_HEADERS_USER_PRIMARY, json=save_body
     )
     assert response.json() == [{"active": False, "id": 11, "title": "Untitled"}]
+
+
+def test_update_save(client: TestClient) -> None:
+    save_body = [
+        {
+            k: v
+            for (k, v) in world.save_factory(id=1, user_id=1).items()
+            if k not in ["user_id"]
+        }
+    ]
+    response = client.post(
+        f"/saves/{save_body[0]['id']}",
+        headers=world.AUTH_HEADERS_USER_PRIMARY,
+        json=save_body,
+    )
+    assert response.json() == [
+        {"active": False, "id": save_body[0]["id"], "title": "Untitled"}
+    ]

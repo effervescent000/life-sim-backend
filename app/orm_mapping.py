@@ -1,12 +1,10 @@
-from typing import Generic, Type, TypeVar
+from typing import Type
 
 from pydantic import BaseModel
 
 from .auth.models import UserRead, UserWrite
 from .db import schema
 from .saves.models import SaveRead, SaveWrite
-
-# TBaseModel = TypeVar("TBaseModel", bound=BaseModel)
 
 
 class ModelMapping(BaseModel):
