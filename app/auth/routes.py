@@ -1,3 +1,4 @@
+from typing import Any
 from fastapi import APIRouter, Depends
 
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -36,7 +37,9 @@ async def add_user(
 
 
 @router.post("/login")
-async def login(login_attempt: LoginForm, db: Session = Depends(get_db)):
+async def login(
+    login_attempt: LoginForm, db: Session = Depends(get_db)
+) -> dict[str, Any]:
     result = db.scalars(select(User).where(User.email == login_attempt.email)).first()
     if not result:
         raise bad_request(message="Incorrect username or password")

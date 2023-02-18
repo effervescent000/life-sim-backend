@@ -1,29 +1,34 @@
+from pydantic import BaseModel
+from sqlalchemy import select
 from sqlalchemy.orm import Session
-from typing import Type, TypeVar, Any
+from typing import Sequence, Type, TypeVar, Any
 
-from .models import MirrorModel
-
-TMirrorModel = TypeVar("TMirrorModel", bound=MirrorModel[Any])
-
-
-def select_mirror_models(
-    db: Session, id: int, model: Type[TMirrorModel]
-) -> list[TMirrorModel]:
-    selection = model.select_with_id(id)
-    records: Any = db.execute(selection)
-    if model.use_scalars:
-        records = records.scalars()
-    return [model.from_orm(record) for record in records.all()]
+from app.db.database import Base
+from app.orm_mapping import ORM_MAP
 
 
-def upsert_mirror_models(
-    db: Session, read_model: Type[TMirrorModel], write_models: list[TMirrorModel]
-) -> list[TMirrorModel]:
-    mutations: list[TMirrorModel] = []
+TBaseModel = TypeVar("TBaseModel", bound=BaseModel)
+TOrmModel = TypeVar("TOrmModel", bound=Base)
 
-    for model in write_models:
-        mutated = db.merge(model.to_orm())
+
+def select_models(
+    db: Session,
+    save_id: int,
+    orm: Type[TOrmModel],
+) -> list[BaseModel]:
+    selection = select(orm).where(orm.save_id == save_id)
+    result = db.scalars(selection).all()
+    out = [ORM_MAP[orm].read.from_orm(r) for r in result]
+    return out
+
+
+def upsert_models(
+    db: Session, orm: Type[TOrmModel], data: Sequence[BaseModel]
+) -> list[Any]:
+    mutations: list[Any] = []
+
+    for x in data:
+        mutated = db.merge(orm(**x.dict()))
         db.commit()
-        mutations.append(read_model.from_orm(mutated))
-
+        mutations.append(ORM_MAP[orm].read.from_orm(mutated))
     return mutations

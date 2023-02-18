@@ -5,12 +5,9 @@ from ..db.models import MirrorModel
 from ..db.schema import User as UserORM
 
 
-class UserBase(MirrorModel[UserORM], orm=UserORM):
+class UserBase(BaseModel, orm_mode=True):
     email: str
     username: Optional[str] = None
-
-    def __init_subclass__(cls, **kwargs) -> None:
-        super().__init_subclass__(**kwargs, orm=cls.orm)
 
 
 class UserRead(UserBase):
