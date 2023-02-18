@@ -38,7 +38,7 @@ def test_update_save(client: TestClient) -> None:
         }
     ]
     response = client.post(
-        f"/saves/{save_body[0]['id']}",
+        f"/saves",
         headers=world.AUTH_HEADERS_USER_PRIMARY,
         json=save_body,
     )
