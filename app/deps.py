@@ -1,9 +1,9 @@
-from fastapi import Request, HTTPException
+from fastapi import HTTPException, Request
 from fastapi.security import OAuth2PasswordBearer
 
-from .db.database import SessionLocal
-from .auth.models import UserRead
 from .auth.helpers import decode_jwt
+from .auth.models import UserRead
+from .db.database import SessionLocal
 
 
 def get_db():

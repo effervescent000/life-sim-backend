@@ -1,11 +1,11 @@
+from typing import Any, Sequence, Type, TypeVar
+
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from typing import Sequence, Type, TypeVar, Any
 
 from app.db.database import Base
 from app.orm_mapping import ORM_MAP
-
 
 TBaseModel = TypeVar("TBaseModel", bound=BaseModel)
 TOrmModel = TypeVar("TOrmModel", bound=Base)

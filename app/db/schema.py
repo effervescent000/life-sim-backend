@@ -1,7 +1,7 @@
 import time
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship, declarative_mixin
+from sqlalchemy.orm import declarative_mixin, relationship
 
 from .database import Base
 

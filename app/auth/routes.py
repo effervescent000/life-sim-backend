@@ -1,18 +1,17 @@
 from typing import Any
-from fastapi import APIRouter, Depends
 
+from fastapi import APIRouter, Depends
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.hash import pbkdf2_sha256 as passlib
-
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from .helpers import sign_jwt, make_access_token
-from .models import UserRead, UserWrite, LoginForm
+from ..db.schema import User
 from ..deps import get_db
 from ..tags import Tags
-from ..db.schema import User
 from ..utils.http_utils import bad_request
+from .helpers import make_access_token, sign_jwt
+from .models import LoginForm, UserRead, UserWrite
 
 router = APIRouter(prefix="/auth", tags=[Tags.users])
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")

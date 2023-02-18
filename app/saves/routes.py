@@ -1,16 +1,16 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy import select
-
-from sqlalchemy.orm import Session
 from typing import Any, Sequence
 
-from .models import SaveRead, SaveWrite, SaveBase
-from ..deps import get_db, auth_required
-from ..tags import Tags
-from ..db.schema import Save as SaveORM
-from ..utils.http_utils import bad_request
+from fastapi import APIRouter, Depends
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.db.queries import upsert_models
+
+from ..db.schema import Save as SaveORM
+from ..deps import auth_required, get_db
+from ..tags import Tags
+from ..utils.http_utils import bad_request
+from .models import SaveBase, SaveRead, SaveWrite
 
 router = APIRouter(prefix="/saves", tags=[Tags.saves])
 

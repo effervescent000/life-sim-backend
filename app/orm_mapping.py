@@ -1,7 +1,9 @@
 from typing import Generic, Type, TypeVar
+
 from pydantic import BaseModel
-from .db import schema
+
 from .auth.models import UserRead, UserWrite
+from .db import schema
 from .saves.models import SaveRead, SaveWrite
 
 # TBaseModel = TypeVar("TBaseModel", bound=BaseModel)

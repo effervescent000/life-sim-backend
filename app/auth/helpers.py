@@ -1,7 +1,6 @@
-from jwt import encode, decode
+from jwt import decode, encode
 
 from ..config import settings
-
 from .models import UserRead
 
 

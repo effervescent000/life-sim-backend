@@ -1,9 +1,10 @@
 from typing import Any, Optional
+
 from passlib.hash import pbkdf2_sha256 as passlib
 
-from ..db.schema import User, Save
 from ..auth.helpers import sign_jwt
 from ..auth.models import UserRead
+from ..db.schema import Save, User
 
 
 def user_factory(
