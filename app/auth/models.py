@@ -1,9 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
 
-from ..db.models import MirrorModel
-from ..db.schema import User as UserORM
-
 
 class UserBase(BaseModel, orm_mode=True):
     email: str

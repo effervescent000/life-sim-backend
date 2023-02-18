@@ -22,9 +22,7 @@ def select_models(
     return out
 
 
-def upsert_models(
-    db: Session, orm: Type[TOrmModel], data: Sequence[BaseModel]
-) -> list[Any]:
+def upsert_models(db: Session, orm: Type[TOrmModel], data: list[Any]) -> list[Any]:
     mutations: list[Any] = []
 
     for x in data:
