@@ -1,7 +1,7 @@
 import time
 
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship, declarative_mixin
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import declarative_mixin, relationship
 
 from .database import Base
 
@@ -33,7 +33,8 @@ class Save(Base, WithAuditTimes, WithAutoIntPK):
     __tablename__ = "saves"
 
     title = Column(String, default="Untitled")
+    active = Column(Boolean, default=False)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     user = relationship("User", back_populates="saves")

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel, orm_mode=True):
     email: str
-    username: Optional[str]
+    username: Optional[str] = None
 
 
 class UserRead(UserBase):
@@ -13,4 +13,9 @@ class UserRead(UserBase):
 
 
 class UserWrite(UserBase):
+    password: str
+
+
+class LoginForm(BaseModel):
+    email: str
     password: str

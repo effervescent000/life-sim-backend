@@ -1,17 +1,20 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends
+# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.hash import pbkdf2_sha256 as passlib
-
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from .models import UserRead, UserWrite
+from ..db.schema import User
 from ..deps import get_db
 from ..tags import Tags
-from ..schema import User
 from ..utils.http_utils import bad_request
+from .helpers import make_access_token, sign_jwt
+from .models import LoginForm, UserRead, UserWrite
 
 router = APIRouter(prefix="/auth", tags=[Tags.users])
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 @router.get("/")
@@ -33,10 +36,13 @@ async def add_user(
 
 
 @router.post("/login")
-async def login(login_attempt: UserWrite, db: Session = Depends(get_db)):
-    user = db.scalars(select(User).where(User.email == login_attempt.email)).first()
-    if not user:
+async def login(
+    login_attempt: LoginForm, db: Session = Depends(get_db)
+) -> dict[str, Any]:
+    result = db.scalars(select(User).where(User.email == login_attempt.email)).first()
+    if not result:
         raise bad_request(message="Incorrect username or password")
-    if passlib.verify(login_attempt.password, str(user.password)) is False:
+    if passlib.verify(login_attempt.password, str(result.password)) is False:
         raise bad_request(message="Incorrect username or password")
-    return {"access_token": user.username, "token_type": "bearer"}
+    user = UserRead.from_orm(result)
+    return make_access_token(user=user, jwt=sign_jwt(user))
